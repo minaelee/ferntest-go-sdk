@@ -3,12 +3,12 @@
 package client
 
 import (
+	core "github.com/minaelee/ferntest-go-sdk/core"
+	option "github.com/minaelee/ferntest-go-sdk/option"
+	pet "github.com/minaelee/ferntest-go-sdk/pet"
+	store "github.com/minaelee/ferntest-go-sdk/store"
+	user "github.com/minaelee/ferntest-go-sdk/user"
 	http "net/http"
-	core "sdk/core"
-	option "sdk/option"
-	pet "sdk/pet"
-	store "sdk/store"
-	user "sdk/user"
 )
 
 type Client struct {

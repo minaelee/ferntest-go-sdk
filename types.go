@@ -5,7 +5,7 @@ package petstoreferndefapi
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "sdk/core"
+	core "github.com/minaelee/ferntest-go-sdk/core"
 )
 
 type Category struct {

@@ -8,12 +8,12 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
+	ferntestgosdk "github.com/minaelee/ferntest-go-sdk"
+	core "github.com/minaelee/ferntest-go-sdk/core"
+	option "github.com/minaelee/ferntest-go-sdk/option"
 	io "io"
 	http "net/http"
 	url "net/url"
-	sdk "sdk"
-	core "sdk/core"
-	option "sdk/option"
 )
 
 type Client struct {
@@ -39,9 +39,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 // Add a new Pet to the store
 func (c *Client) Add(
 	ctx context.Context,
-	request *sdk.AddPetRequest,
+	request *ferntestgosdk.AddPetRequest,
 	opts ...option.RequestOption,
-) (*sdk.Pet, error) {
+) (*ferntestgosdk.Pet, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://petstore3.swagger.io/api/v3"
@@ -64,7 +64,7 @@ func (c *Client) Add(
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
 		case 400:
-			value := new(sdk.InvalidPetInputError)
+			value := new(ferntestgosdk.InvalidPetInputError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -74,7 +74,7 @@ func (c *Client) Add(
 		return apiError
 	}
 
-	var response *sdk.Pet
+	var response *ferntestgosdk.Pet
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -96,9 +96,9 @@ func (c *Client) Add(
 // Update an existing Pet by ID
 func (c *Client) Update(
 	ctx context.Context,
-	request *sdk.UpdatePetRequest,
+	request *ferntestgosdk.UpdatePetRequest,
 	opts ...option.RequestOption,
-) (*sdk.Pet, error) {
+) (*ferntestgosdk.Pet, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://petstore3.swagger.io/api/v3"
@@ -121,14 +121,14 @@ func (c *Client) Update(
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
 		case 400:
-			value := new(sdk.InvalidPetIdError)
+			value := new(ferntestgosdk.InvalidPetIdError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
 			}
 			return value
 		case 404:
-			value := new(sdk.PetNotFoundError)
+			value := new(ferntestgosdk.PetNotFoundError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -138,7 +138,7 @@ func (c *Client) Update(
 		return apiError
 	}
 
-	var response *sdk.Pet
+	var response *ferntestgosdk.Pet
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -160,9 +160,9 @@ func (c *Client) Update(
 // Multiple status values can be provided with comma separated strings
 func (c *Client) FindPetsByStatus(
 	ctx context.Context,
-	request *sdk.FindPetsByStatusRequest,
+	request *ferntestgosdk.FindPetsByStatusRequest,
 	opts ...option.RequestOption,
-) ([]*sdk.Pet, error) {
+) ([]*ferntestgosdk.Pet, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://petstore3.swagger.io/api/v3"
@@ -193,7 +193,7 @@ func (c *Client) FindPetsByStatus(
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
 		case 400:
-			value := new(sdk.InvalidPetStatusError)
+			value := new(ferntestgosdk.InvalidPetStatusError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -203,7 +203,7 @@ func (c *Client) FindPetsByStatus(
 		return apiError
 	}
 
-	var response []*sdk.Pet
+	var response []*ferntestgosdk.Pet
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -224,9 +224,9 @@ func (c *Client) FindPetsByStatus(
 // Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
 func (c *Client) FindPetsByTags(
 	ctx context.Context,
-	request *sdk.FindPetsByTagsRequest,
+	request *ferntestgosdk.FindPetsByTagsRequest,
 	opts ...option.RequestOption,
-) ([]*sdk.Pet, error) {
+) ([]*ferntestgosdk.Pet, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://petstore3.swagger.io/api/v3"
@@ -257,7 +257,7 @@ func (c *Client) FindPetsByTags(
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
 		case 400:
-			value := new(sdk.InvalidTagError)
+			value := new(ferntestgosdk.InvalidTagError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -267,7 +267,7 @@ func (c *Client) FindPetsByTags(
 		return apiError
 	}
 
-	var response []*sdk.Pet
+	var response []*ferntestgosdk.Pet
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -291,7 +291,7 @@ func (c *Client) FindPetById(
 	// ID of Pet to return
 	petId int,
 	opts ...option.RequestOption,
-) (*sdk.Pet, error) {
+) (*ferntestgosdk.Pet, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://petstore3.swagger.io/api/v3"
@@ -314,14 +314,14 @@ func (c *Client) FindPetById(
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
 		case 400:
-			value := new(sdk.InvalidPetIdError)
+			value := new(ferntestgosdk.InvalidPetIdError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
 			}
 			return value
 		case 404:
-			value := new(sdk.PetNotFoundError)
+			value := new(ferntestgosdk.PetNotFoundError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -331,7 +331,7 @@ func (c *Client) FindPetById(
 		return apiError
 	}
 
-	var response *sdk.Pet
+	var response *ferntestgosdk.Pet
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -353,7 +353,7 @@ func (c *Client) UpdatePetWithForm(
 	ctx context.Context,
 	// ID of Pet that needs to be updated
 	petId int,
-	request *sdk.UpdatePetWithFormRequest,
+	request *ferntestgosdk.UpdatePetWithFormRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -389,7 +389,7 @@ func (c *Client) UpdatePetWithForm(
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
 		case 400:
-			value := new(sdk.InvalidPetIdError)
+			value := new(ferntestgosdk.InvalidPetIdError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -443,7 +443,7 @@ func (c *Client) Delete(
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
 		case 400:
-			value := new(sdk.InvalidPetIdError)
+			value := new(ferntestgosdk.InvalidPetIdError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError

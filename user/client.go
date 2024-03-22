@@ -8,12 +8,12 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
+	ferntestgosdk "github.com/minaelee/ferntest-go-sdk"
+	core "github.com/minaelee/ferntest-go-sdk/core"
+	option "github.com/minaelee/ferntest-go-sdk/option"
 	io "io"
 	http "net/http"
 	url "net/url"
-	sdk "sdk"
-	core "sdk/core"
-	option "sdk/option"
 )
 
 type Client struct {
@@ -39,9 +39,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 // This can only be peformed by the logged in user.
 func (c *Client) Create(
 	ctx context.Context,
-	request *sdk.CreateUserRequest,
+	request *ferntestgosdk.CreateUserRequest,
 	opts ...option.RequestOption,
-) (*sdk.User, error) {
+) (*ferntestgosdk.User, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://petstore3.swagger.io/api/v3"
@@ -55,7 +55,7 @@ func (c *Client) Create(
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
-	var response *sdk.User
+	var response *ferntestgosdk.User
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -76,9 +76,9 @@ func (c *Client) Create(
 // Creates list of users with given input array
 func (c *Client) CreateUsersWithListInput(
 	ctx context.Context,
-	request sdk.CreateUsersWithListInputRequest,
+	request ferntestgosdk.CreateUsersWithListInputRequest,
 	opts ...option.RequestOption,
-) (*sdk.User, error) {
+) (*ferntestgosdk.User, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://petstore3.swagger.io/api/v3"
@@ -92,7 +92,7 @@ func (c *Client) CreateUsersWithListInput(
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
-	var response *sdk.User
+	var response *ferntestgosdk.User
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -112,7 +112,7 @@ func (c *Client) CreateUsersWithListInput(
 
 func (c *Client) Login(
 	ctx context.Context,
-	request *sdk.LoginUserRequest,
+	request *ferntestgosdk.LoginUserRequest,
 	opts ...option.RequestOption,
 ) (string, error) {
 	options := core.NewRequestOptions(opts...)
@@ -148,7 +148,7 @@ func (c *Client) Login(
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
 		case 400:
-			value := new(sdk.InvalidUsernameOrPasswordError)
+			value := new(ferntestgosdk.InvalidUsernameOrPasswordError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -213,7 +213,7 @@ func (c *Client) Get(
 	// The name that needs to be fetched. Use user1 for testing.
 	username string,
 	opts ...option.RequestOption,
-) (*sdk.User, error) {
+) (*ferntestgosdk.User, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://petstore3.swagger.io/api/v3"
@@ -236,14 +236,14 @@ func (c *Client) Get(
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
 		case 400:
-			value := new(sdk.InvalidUsernameError)
+			value := new(ferntestgosdk.InvalidUsernameError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
 			}
 			return value
 		case 404:
-			value := new(sdk.UserNotFoundError)
+			value := new(ferntestgosdk.UserNotFoundError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -253,7 +253,7 @@ func (c *Client) Get(
 		return apiError
 	}
 
-	var response *sdk.User
+	var response *ferntestgosdk.User
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -276,7 +276,7 @@ func (c *Client) Update(
 	ctx context.Context,
 	// name that needs to be updated
 	username string,
-	request *sdk.UpdateUserRequest,
+	request *ferntestgosdk.UpdateUserRequest,
 	opts ...option.RequestOption,
 ) error {
 	options := core.NewRequestOptions(opts...)
@@ -337,14 +337,14 @@ func (c *Client) Delete(
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
 		case 400:
-			value := new(sdk.InvalidUsernameError)
+			value := new(ferntestgosdk.InvalidUsernameError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
 			}
 			return value
 		case 404:
-			value := new(sdk.UserNotFoundError)
+			value := new(ferntestgosdk.UserNotFoundError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError

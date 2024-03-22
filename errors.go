@@ -4,7 +4,7 @@ package petstoreferndefapi
 
 import (
 	json "encoding/json"
-	core "sdk/core"
+	core "github.com/minaelee/ferntest-go-sdk/core"
 )
 
 type InvalidPetIdError struct {

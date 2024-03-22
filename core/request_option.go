@@ -48,7 +48,11 @@ func (r *RequestOptions) ToHeader() http.Header {
 }
 
 func (r *RequestOptions) cloneHeader() http.Header {
-	return r.HTTPHeader.Clone()
+	headers := r.HTTPHeader.Clone()
+	headers.Set("X-Fern-Language", "Go")
+	headers.Set("X-Fern-SDK-Name", "github.com/minaelee/ferntest-go-sdk")
+	headers.Set("X-Fern-SDK-Version", "v0.0.26")
+	return headers
 }
 
 // BaseURLOption implements the RequestOption interface.

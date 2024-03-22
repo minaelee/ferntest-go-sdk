@@ -8,11 +8,11 @@ import (
 	json "encoding/json"
 	errors "errors"
 	fmt "fmt"
+	ferntestgosdk "github.com/minaelee/ferntest-go-sdk"
+	core "github.com/minaelee/ferntest-go-sdk/core"
+	option "github.com/minaelee/ferntest-go-sdk/option"
 	io "io"
 	http "net/http"
-	sdk "sdk"
-	core "sdk/core"
-	option "sdk/option"
 )
 
 type Client struct {
@@ -73,9 +73,9 @@ func (c *Client) GetInventory(
 // Place a new order in the store for a Pet
 func (c *Client) PlaceOrder(
 	ctx context.Context,
-	request *sdk.OrderRequest,
+	request *ferntestgosdk.OrderRequest,
 	opts ...option.RequestOption,
-) (*sdk.Order, error) {
+) (*ferntestgosdk.Order, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://petstore3.swagger.io/api/v3"
@@ -98,7 +98,7 @@ func (c *Client) PlaceOrder(
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
 		case 400:
-			value := new(sdk.InvalidOrderInputError)
+			value := new(ferntestgosdk.InvalidOrderInputError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -108,7 +108,7 @@ func (c *Client) PlaceOrder(
 		return apiError
 	}
 
-	var response *sdk.Order
+	var response *ferntestgosdk.Order
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -133,7 +133,7 @@ func (c *Client) FindOrderById(
 	// ID of order that needs to be fetched
 	id int,
 	opts ...option.RequestOption,
-) (*sdk.Order, error) {
+) (*ferntestgosdk.Order, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://petstore3.swagger.io/api/v3"
@@ -156,14 +156,14 @@ func (c *Client) FindOrderById(
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
 		case 404:
-			value := new(sdk.OrderNotFoundError)
+			value := new(ferntestgosdk.OrderNotFoundError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
 			}
 			return value
 		case 400:
-			value := new(sdk.InvalidOrderIdError)
+			value := new(ferntestgosdk.InvalidOrderIdError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -173,7 +173,7 @@ func (c *Client) FindOrderById(
 		return apiError
 	}
 
-	var response *sdk.Order
+	var response *ferntestgosdk.Order
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -220,14 +220,14 @@ func (c *Client) DeleteOrder(
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
 		case 404:
-			value := new(sdk.OrderNotFoundError)
+			value := new(ferntestgosdk.OrderNotFoundError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
 			}
 			return value
 		case 400:
-			value := new(sdk.InvalidOrderIdError)
+			value := new(ferntestgosdk.InvalidOrderIdError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError

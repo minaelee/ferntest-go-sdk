@@ -1,4 +1,4 @@
-module sdk
+module github.com/minaelee/ferntest-go-sdk
 
 go 1.13
 
